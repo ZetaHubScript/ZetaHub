@@ -1,4 +1,166 @@
-local httpService = game:GetService("HttpService")
-local encodedScript = [[bG9jYWwgUmF5ZmllbGQgPSBsb2Fkc3RyaW5nKGdhbWU6SHR0cEdldCgnaHR0cHM6Ly9zaXJpdXMubWVudS9yYXlmaWVsZCcpKSgpCgpsb2NhbCBXaW5kb3cgPSBSYXlmaWVsZDpDcmVhdGVXaW5kb3coewogICBOYW1lID0gIvCfjLggWkVUQSBIVUIg8J+MuCIsCiAgIExvYWRpbmdUaXRsZSA9ICLwn4y4IFpFVEEgSFVCIPCfjLgiLAogICBMb2FkaW5nU3VidGl0bGUgPSAiYnkgZXh4IiwKICAgQ29uZmlndXJhdGlvblNhdmluZyA9IHsKICAgICAgRW5hYmxlZCA9IGZhbHNlLAogICAgICBGb2xkZXJOYW1lID0gbmlsLAogICAgICBGaWxlTmFtZSA9ICJaRVRBIEhVQiIKICAgfSwKICAgRGlzY29yZCA9IHsKICAgICAgRW5hYmxlZCA9IGZhbHNlLAogICAgICBJbnZpdGUgPSAibm9pbnZpdGVsaW5rIiwKICAgICAgUmVtZW1iZXJKb2lucyA9IHRydWUKICAgfSwKICAgS2V5U3lzdGVtID0gdHJ1ZSwKICAgS2V5U2V0dGluZ3MgPSB7CiAgIFRpdGxlID0gIiIsCiAgIFN1YnRpdGxlID0gIkVudGVyIHlvdXIga2V5IiwKICAgTm90ZSA9ICIiLAogICBGaWxlTmFtZSA9ICJaRVRBIEhVQiIsCiAgIFNhdmVLZXkgPSB0cnVlLAogICBHcmFiS2V5RnJvbVNpdGUgPSB0cnVlLAogICBLZXkgPSB7IjxWMGZMKWJTZEkxMCJ9LAogICAgfQp9KQoKbG9jYWwgTWFpblRhYiA9IFdpbmRvdzpDcmVhdGVUYWIoIvCfj6AgSG9tZSIsIG5pbCkKbG9jYWwgTWFpblNlY3Rpb24gPSBNYWluVGFiOkNyZWF0ZVNlY3Rpb24oIk1haW4iKQoKUmF5ZmllbGQ6Tm90aWZ5KHsKICAgVGl0bGUgPSAiR0wiLAogICBDb250ZW50ID0gImhhdmUgZnVuIiwKICAgRHVyYXRpb24gPSA1LAogICBJbWFnZSA9IDEzMDQ3NzE1MTc4LAogICBBY3Rpb25zID0gewogICAgICBJZ25vcmUgPSB7CiAgICAgICAgIE5hbWUgPSAiT2theSEiLAogICAgICAgICBDYWxsYmFjayA9IGZ1bmN0aW9uKCkKICAgICAgICAgICAgcHJpbnQoIlRoZSB1c2VyIHRhcHBlZCBPa2F5ISIpCiAgICAgICAgIGVuZAogICAgICB9LAogICB9LAp9KQoKbG9jYWwgQnV0dG9uRHVwZSA9IE1haW5UYWI6Q3JlYXRlQnV0dG9uKHsKICAgTmFtZSA9ICJEdXBlIiwKICAgQ2FsbGJhY2sgPSBmdW5jdGlvbigpCiAgICAgICBsb2NhbCBwbGF5ZXIgPSBnYW1lLlBsYXllcnMuTG9jYWxQbGF5ZXIKICAgICAgIGxvY2FsIGNoYXJhY3RlciA9IHBsYXllci5DaGFyYWN0ZXIKICAgICAgIGlmIGNoYXJhY3RlciB0aGVuCiAgICAgICAgICAgbG9jYWwgdG9vbCA9IGNoYXJhY3RlcjpGaW5kRmlyc3RDaGlsZE9mQ2xhc3MoIlRvb2wiKQogICAgICAgICAgIGlmIHRvb2wgdGhlbgogICAgICAgICAgICAgICBsb2NhbCBjbG9uZSA9IHRvb2w6Q2xvbmUoKQogICAgICAgICAgICAgICBjbG9uZTpTZXRBdHRyaWJ1dGUoIklzRHVwZSIsIHRydWUpICAtLSDQntGC0LzQtdGH0LDQtdC8INC60LDQuiDQtNGO0L/QvdGD0YLRi9C5CiAgICAgICAgICAgICAgIGNsb25lLlBhcmVudCA9IHBsYXllci5CYWNrcGFjawogICAgICAgICAgICAgICBwcmludCgiSXRlbSB2aXN1YWxseSBkdXBsaWNhdGVkISIpCiAgICAgICAgICAgZWxzZQogICAgICAgICAgICAgICBwcmludCgiSG9sZCBhbiBpdGVtIGluIHlvdXIgaGFuZHMhIikKICAgICAgICAgICBlbmQKICAgICAgIGVuZAogICBlbmQsCn0pCmxvY2FsIE1haW5TZWN0aW9uID0gTWFpblRhYjpDcmVhdGVTZWN0aW9uKCJPdGhlciIpCgpsb2NhbCBCdXR0b24gPSBNYWluVGFiOkNyZWF0ZUJ1dHRvbih7CiAgIE5hbWUgPSAiSW5maW5pdGUgSnVtcCBUb2dnbGUiLAogICBDYWxsYmFjayA9IGZ1bmN0aW9uKCkKICAgICAgIF9HLmluZmluanVtcCA9IG5vdCBfRy5pbmZpbmp1bXAKICAgICAgIGlmIF9HLmluZmluSnVtcFN0YXJ0ZWQgPT0gbmlsIHRoZW4KICAgICAgICAgICBfRy5pbmZpbkp1bXBTdGFydGVkID0gdHJ1ZQogICAgICAgICAgIGdhbWUuU3RhcnRlckd1aTpTZXRDb3JlKCJTZW5kTm90aWZpY2F0aW9uIiwge1RpdGxlPSJaZXRhIjsgVGV4dD0iSW5maW5pdGUgSnVtcCBBY3RpdmF0ZWQhIjsgRHVyYXRpb249NTt9KQogICAgICAgICAgIGxvY2FsIHBsciA9IGdhbWU6R2V0U2VydmljZSgnUGxheWVycycpLkxvY2FsUGxheWVyCiAgICAgICAgICAgbG9jYWwgbSA9IHBscjpHZXRNb3VzZSgpCiAgICAgICAgICAgbS5LZXlEb3duOmNvbm5lY3QoZnVuY3Rpb24oaykKICAgICAgICAgICAgICAgaWYgX0cuaW5maW5qdW1wIHRoZW4KICAgICAgICAgICAgICAgICAgIGlmIGs6Ynl0ZSgpID09IDMyIHRoZW4KICAgICAgICAgICAgICAgICAgICAgICBodW1hbm9pZCA9IGdhbWU6R2V0U2VydmljZSdQbGF5ZXJzJy5Mb2NhbFBsYXllci5DaGFyYWN0ZXI6RmluZEZpcnN0Q2hpbGRPZkNsYXNzKCdIdW1hbm9pZCcpCiAgICAgICAgICAgICAgICAgICAgICAgaHVtYW5vaWQ6Q2hhbmdlU3RhdGUoJ0p1bXBpbmcnKQogICAgICAgICAgICAgICAgICAgICAgIHdhaXQoKQogICAgICAgICAgICAgICAgICAgICAgIGh1bWFub2lkOkNoYW5nZVN0YXRlKCdTZWF0ZWQnKQogICAgICAgICAgICAgICAgICAgZW5kCiAgICAgICAgICAgICAgIGVuZAogICAgICAgICAgIGVuZCkKICAgICAgIGVuZAogICBlbmQsCn0pCgpsb2NhbCBTbGlkZXIgPSBNYWluVGFiOkNyZWF0ZVNsaWRlcih7CiAgIE5hbWUgPSAiSnVtcFBvd2VyIFNsaWRlciIsCiAgIFJhbmdlID0gezEsIDM1MH0sCiAgIEluY3JlbWVudCA9IDEsCiAgIFN1ZmZpeCA9ICJTcGVlZCIsCiAgIEN1cnJlbnRWYWx1ZSA9IDE2LAogICBGbGFnID0gInNsaWRlcmpwIiwKICAgQ2FsbGJhY2sgPSBmdW5jdGlvbihWYWx1ZSkKICAgICAgICBnYW1lLlBsYXllcnMuTG9jYWxQbGF5ZXIuQ2hhcmFjdGVyLkh1bWFub2lkLkp1bXBQb3dlciA9IChWYWx1ZSkKICAgZW5kLAp9KQoKbG9jYWwgSW5wdXQgPSBNYWluVGFiOkNyZWF0ZUlucHV0KHsKICAgTmFtZSA9ICJXYWxrc3BlZWQiLAogICBQbGFjZWhvbGRlclRleHQgPSAiMS01MDAiLAogICBSZW1vdmVUZXh0QWZ0ZXJGb2N1c0xvc3QgPSB0cnVlLAogICBDYWxsYmFjayA9IGZ1bmN0aW9uKFRleHQpCiAgICAgICAgZ2FtZS5QbGF5ZXJzLkxvY2FsUGxheWVyLkNoYXJhY3Rlci5IdW1hbm9pZC5XYWxrU3BlZWQgPSAoVGV4dCkKICAgZW5kLAp9KQoKbG9jYWwgVGVsZXBvcnRUYWIgPSBXaW5kb3c6Q3JlYXRlVGFiKCLwn4+dIFRlbGVwb3J0cyIsIG5pbCkKCmxvY2FsIEJ1dHRvbkdlYXIgPSBUZWxlcG9ydFRhYjpDcmVhdGVCdXR0b24oewogICBOYW1lID0gIkdlYXIgU2hvcCIsCiAgIENhbGxiYWNrID0gZnVuY3Rpb24oKQogICAgICAgbG9jYWwgcGxheWVyID0gZ2FtZS5QbGF5ZXJzLkxvY2FsUGxheWVyCiAgICAgICBsb2NhbCBjaGFyYWN0ZXIgPSBwbGF5ZXIuQ2hhcmFjdGVyCiAgICAgICBpZiBjaGFyYWN0ZXIgYW5kIGNoYXJhY3RlcjpGaW5kRmlyc3RDaGlsZCgiSHVtYW5vaWRSb290UGFydCIpIHRoZW4KICAgICAgICAgICBjaGFyYWN0ZXIuSHVtYW5vaWRSb290UGFydC5DRnJhbWUgPSBDRnJhbWUubmV3KFZlY3RvcjMubmV3KC0yODQuNjEsIDIuOTksIC0zMi43OCkpIC0tINCX0LDQvNC10L3QuNGC0LUg0L3QsCDRgNC10LDQu9GM0L3Ri9C1INC60L7QvtGA0LTQuNC90LDRgtGLCiAgICAgICBlbHNlCiAgICAgICAgICAgcHJpbnQoIkNvcmQgbm90IGZvdW5kISIpCiAgICAgICBlbmQKICAgZW5kLAp9KQoKbG9jYWwgQnV0dG9uUGV0U2VsbGVyID0gVGVsZXBvcnRUYWI6Q3JlYXRlQnV0dG9uKHsKICAgTmFtZSA9ICJQZXQgU2VsbGVyIiwKICAgQ2FsbGJhY2sgPSBmdW5jdGlvbigpCiAgICAgICBsb2NhbCBwbGF5ZXIgPSBnYW1lLlBsYXllcnMuTG9jYWxQbGF5ZXIKICAgICAgIGxvY2FsIGNoYXJhY3RlciA9IHBsYXllci5DaGFyYWN0ZXIKICAgICAgIGlmIGNoYXJhY3RlciBhbmQgY2hhcmFjdGVyOkZpbmRGaXJzdENoaWxkKCJIdW1hbm9pZFJvb3RQYXJ0IikgdGhlbgogICAgICAgICAgIGNoYXJhY3Rlci5IdW1hbm9pZFJvb3RQYXJ0LkNGcmFtZSA9IENGcmFtZS5uZXcoVmVjdG9yMy5uZXcoLTI4MS4yMywgMi45OSwgOS4wMjQpKSAtLSDQl9Cw0LzQtdC90LjRgtC1INC90LAg0YDQtdCw0LvRjNC90YvQtSDQutC+0L7RgNC00LjQvdCw0YLRiwogICAgICAgZWxzZQogICAgICAgICAgIHByaW50KCJDb3JkIG5vdCBmb3VuZCEiKQogICAgICAgZW5kCiAgIGVuZCwKfSkKCmxvY2FsIEJ1dHRvbk93bCA9IFRlbGVwb3J0VGFiOkNyZWF0ZUJ1dHRvbih7CiAgIE5hbWUgPSAiT3dsIiwKICAgQ2FsbGJhY2sgPSBmdW5jdGlvbigpCiAgICAgICBsb2NhbCBwbGF5ZXIgPSBnYW1lLlBsYXllcnMuTG9jYWxQbGF5ZXIKICAgICAgIGxvY2FsIGNoYXJhY3RlciA9IHBsYXllci5DaGFyYWN0ZXIKICAgICAgIGlmIGNoYXJhY3RlciBhbmQgY2hhcmFjdGVyOkZpbmRGaXJzdENoaWxkKCJIdW1hbm9pZFJvb3RQYXJ0IikgdGhlbgogICAgICAgICAgIGNoYXJhY3Rlci5IdW1hbm9pZFJvb3RQYXJ0LkNGcmFtZSA9IENGcmFtZS5uZXcoVmVjdG9yMy5uZXcoLTEwMS41MywgNC40MCwgLTkuMTMpKSAtLSDQl9Cw0LzQtdC90LjRgtC1INC90LAg0YDQtdCw0LvRjNC90YvQtSDQutC+0L7RgNC00LjQvdCw0YLRiwogICAgICAgZWxzZQogICAgICAgICAgIHByaW50KCJDb3JkIG5vdCBmb3VuZCEiKQogICAgICAgZW5kCiAgIGVuZCwKfSkKCmxvY2FsIE1pc2NUYWIgPSBXaW5kb3c6Q3JlYXRlVGFiKCLwn46yIE1pc2MiLCBuaWwpCgpsb2NhbCBCdXR0b25DbGVhckR1cGUgPSBNaXNjVGFiOkNyZWF0ZUJ1dHRvbih7CiAgIE5hbWUgPSAiQ2xlYXIgRHVwZWQgSXRlbXMiLAogICBDYWxsYmFjayA9IGZ1bmN0aW9uKCkKICAgICAgIGxvY2FsIHBsYXllciA9IGdhbWUuUGxheWVycy5Mb2NhbFBsYXllcgogICAgICAgbG9jYWwgYmFja3BhY2sgPSBwbGF5ZXIuQmFja3BhY2sKICAgICAgIGZvciBfLCBpdGVtIGluIHBhaXJzKGJhY2twYWNrOkdldENoaWxkcmVuKCkpIGRvCiAgICAgICAgICAgaWYgaXRlbTpHZXRBdHRyaWJ1dGUoIklzRHVwZSIpID09IHRydWUgdGhlbgogICAgICAgICAgICAgICBpdGVtOkRlc3Ryb3koKQogICAgICAgICAgIGVuZAogICAgICAgZW5kCiAgICAgICBwcmludCgiRHVwZWQgaXRlbXMgY2xlYXJlZCEiKQogICBlbmQsCn0p]]
-local decodedScript = httpService:Base64Decode(encodedScript)
-loadstring(decodedScript)()
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local Window = Rayfield:CreateWindow({
+   Name = "🌸 ZETA HUB 🌸",
+   LoadingTitle = "🌸 ZETA HUB 🌸",
+   LoadingSubtitle = "by exx",
+   ConfigurationSaving = {
+      Enabled = false,
+      FolderName = nil,
+      FileName = "ZETA HUB"
+   },
+   Discord = {
+      Enabled = false,
+      Invite = "noinvitelink",
+      RememberJoins = true
+   },
+   KeySystem = true,
+   KeySettings = {
+   Title = "",
+   Subtitle = "Enter your key",
+   Note = "",
+   FileName = "ZETA HUB",
+   SaveKey = true,
+   GrabKeyFromSite = true,
+   Key = {"<V0fL)bSdI10"},
+    }
+})
+
+local MainTab = Window:CreateTab("🏠 Home", nil)
+local MainSection = MainTab:CreateSection("Main")
+
+Rayfield:Notify({
+   Title = "GL",
+   Content = "have fun",
+   Duration = 5,
+   Image = 13047715178,
+   Actions = {
+      Ignore = {
+         Name = "Okay!",
+         Callback = function()
+            print("The user tapped Okay!")
+         end
+      },
+   },
+})
+
+local ButtonDupe = MainTab:CreateButton({
+   Name = "Dupe",
+   Callback = function()
+       local player = game.Players.LocalPlayer
+       local character = player.Character
+       if character then
+           local tool = character:FindFirstChildOfClass("Tool")
+           if tool then
+               local clone = tool:Clone()
+               clone:SetAttribute("IsDupe", true)  -- Отмечаем как дюпнутый
+               clone.Parent = player.Backpack
+               print("Item visually duplicated!")
+           else
+               print("Hold an item in your hands!")
+           end
+       end
+   end,
+})
+local MainSection = MainTab:CreateSection("Other")
+
+local Button = MainTab:CreateButton({
+   Name = "Infinite Jump Toggle",
+   Callback = function()
+       _G.infinjump = not _G.infinjump
+       if _G.infinJumpStarted == nil then
+           _G.infinJumpStarted = true
+           game.StarterGui:SetCore("SendNotification", {Title="Zeta"; Text="Infinite Jump Activated!"; Duration=5;})
+           local plr = game:GetService('Players').LocalPlayer
+           local m = plr:GetMouse()
+           m.KeyDown:connect(function(k)
+               if _G.infinjump then
+                   if k:byte() == 32 then
+                       humanoid = game:GetService'Players'.LocalPlayer.Character:FindFirstChildOfClass('Humanoid')
+                       humanoid:ChangeState('Jumping')
+                       wait()
+                       humanoid:ChangeState('Seated')
+                   end
+               end
+           end)
+       end
+   end,
+})
+
+local Slider = MainTab:CreateSlider({
+   Name = "JumpPower Slider",
+   Range = {1, 350},
+   Increment = 1,
+   Suffix = "Speed",
+   CurrentValue = 16,
+   Flag = "sliderjp",
+   Callback = function(Value)
+        game.Players.LocalPlayer.Character.Humanoid.JumpPower = (Value)
+   end,
+})
+
+local Input = MainTab:CreateInput({
+   Name = "Walkspeed",
+   PlaceholderText = "1-500",
+   RemoveTextAfterFocusLost = true,
+   Callback = function(Text)
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = (Text)
+   end,
+})
+
+local TeleportTab = Window:CreateTab("🏝 Teleports", nil)
+
+local ButtonGear = TeleportTab:CreateButton({
+   Name = "Gear Shop",
+   Callback = function()
+       local player = game.Players.LocalPlayer
+       local character = player.Character
+       if character and character:FindFirstChild("HumanoidRootPart") then
+           character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(-284.61, 2.99, -32.78)) -- Замените на реальные координаты
+       else
+           print("Cord not found!")
+       end
+   end,
+})
+
+local ButtonPetSeller = TeleportTab:CreateButton({
+   Name = "Pet Seller",
+   Callback = function()
+       local player = game.Players.LocalPlayer
+       local character = player.Character
+       if character and character:FindFirstChild("HumanoidRootPart") then
+           character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(-281.23, 2.99, 9.024)) -- Замените на реальные координаты
+       else
+           print("Cord not found!")
+       end
+   end,
+})
+
+local ButtonOwl = TeleportTab:CreateButton({
+   Name = "Owl",
+   Callback = function()
+       local player = game.Players.LocalPlayer
+       local character = player.Character
+       if character and character:FindFirstChild("HumanoidRootPart") then
+           character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(-101.53, 4.40, -9.13)) -- Замените на реальные координаты
+       else
+           print("Cord not found!")
+       end
+   end,
+})
+
+local MiscTab = Window:CreateTab("🎲 Misc", nil)
+
+local ButtonClearDupe = MiscTab:CreateButton({
+   Name = "Clear Duped Items",
+   Callback = function()
+       local player = game.Players.LocalPlayer
+       local backpack = player.Backpack
+       for _, item in pairs(backpack:GetChildren()) do
+           if item:GetAttribute("IsDupe") == true then
+               item:Destroy()
+           end
+       end
+       print("Duped items cleared!")
+   end,
+})
